@@ -253,9 +253,9 @@
     </build>
 
     <scm>
-        <url>https://github.com/ninjaframework/ninja</url>
-        <connection>scm:git://github.com/ninjaframework/ninja.git</connection>
-        <developerConnection>scm:git:git@github.com:ninjaframework/ninja.git</developerConnection>
+        <url>https://github.com/zmeggyesi/ninja</url>
+        <connection>scm:git://zmeggyesi.github.com/zmeggyesi/ninja.git</connection>
+        <developerConnection>scm:git:git@zmeggyesi.github.com:zmeggyesi/ninja.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
