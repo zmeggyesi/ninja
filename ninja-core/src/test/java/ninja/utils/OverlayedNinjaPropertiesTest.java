@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,12 @@ public class OverlayedNinjaPropertiesTest {
 
     @Test
     public void precedence() {
+        NinjaProperties ninjaPropertiesForOverlay = NinjaPropertiesImpl.builder()
+                .withMode(NinjaMode.prod)
+                .externalConfiguration("conf/overlayed.empty.conf")
+                .build();
         OverlayedNinjaProperties ninjaProperties 
-                = new OverlayedNinjaProperties(
-                        new NinjaPropertiesImpl(NinjaMode.prod, "conf/overlayed.empty.conf"));
-        
+                = new OverlayedNinjaProperties(ninjaPropertiesForOverlay);
         // no value anywhere
         assertThat(ninjaProperties.get("key1", null, null), is(nullValue()));
         assertThat(ninjaProperties.getInteger("key2", null, null), is(nullValue()));
@@ -43,9 +45,12 @@ public class OverlayedNinjaPropertiesTest {
         
         
         // configProperty > defaultValue
+        ninjaPropertiesForOverlay = NinjaPropertiesImpl.builder()
+                .withMode(NinjaMode.prod)
+                .externalConfiguration("conf/overlayed.conf")
+                .build();
         ninjaProperties 
-                = new OverlayedNinjaProperties(
-                        new NinjaPropertiesImpl(NinjaMode.prod, "conf/overlayed.conf"));
+                = new OverlayedNinjaProperties(ninjaPropertiesForOverlay);
         
         assertThat(ninjaProperties.get("key1", null, "default"), is("test1"));
         assertThat(ninjaProperties.getInteger("key2", null, 0), is(1));
@@ -75,9 +80,12 @@ public class OverlayedNinjaPropertiesTest {
     
     @Test
     public void badValues() {
+        NinjaProperties ninjaPropertiesForOverlay = NinjaPropertiesImpl.builder()
+                .withMode(NinjaMode.dev)
+                .externalConfiguration("conf/overlayed.bad.conf")
+                .build();
         OverlayedNinjaProperties ninjaProperties 
-                = new OverlayedNinjaProperties(
-                        new NinjaPropertiesImpl(NinjaMode.dev, "conf/overlayed.bad.conf"));
+                = new OverlayedNinjaProperties(ninjaPropertiesForOverlay);
         
         try {
             Integer i = ninjaProperties.getInteger("key2", null, null);

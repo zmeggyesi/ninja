@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import com.google.inject.Singleton;
 public class LifecycleSupportTest {
 
     @Before
-    public void setUp() {
+    public final void setUp() {
         MockSingletonService.started = 0;
         MockService.started = 0;
     }

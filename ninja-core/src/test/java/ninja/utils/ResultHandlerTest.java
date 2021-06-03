@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,11 +68,10 @@ public class ResultHandlerTest {
     private Context context;
 
     @Mock
-    Logger logger;
+    private Logger logger;
 
     @Before
-    public void init() throws Exception {
-
+    public final void init() throws Exception {
         resultHandler = new ResultHandler(logger, templateEngineManager);
         when(responseStreams.getOutputStream()).thenReturn(outputStream);
         when(responseStreams.getWriter()).thenReturn(writer);
@@ -83,7 +82,6 @@ public class ResultHandlerTest {
             .thenReturn(templateEngine);
         when(templateEngineManager.getTemplateEngineForContentType(Result.TEXT_HTML))
             .thenReturn(templateEngineHtml);
-
     }
 
     /**

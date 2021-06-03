@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package ninja.migrations;
 
+import com.google.inject.AbstractModule;
 import ninja.utils.NinjaMode;
 import ninja.utils.NinjaPropertiesImpl;
 
@@ -26,14 +27,10 @@ import org.junit.rules.ExpectedException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
-import ninja.BaseAndClassicModules;
 import ninja.migrations.flyway.MigrationEngineFlyway;
 import ninja.utils.NinjaConstant;
+import ninja.utils.NinjaProperties;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertThat;
 
 public class MigrationEngineProviderTest {
@@ -43,11 +40,20 @@ public class MigrationEngineProviderTest {
     
     @Test
     public void defaultImplementation() {
-        NinjaPropertiesImpl ninjaProperties = new NinjaPropertiesImpl(NinjaMode.test);   
+        NinjaPropertiesImpl ninjaProperties = NinjaPropertiesImpl.builder()
+                .withMode(NinjaMode.test)
+                .build();   
         
         ninjaProperties.setProperty(NinjaConstant.MIGRATION_ENGINE_IMPLEMENTATION, null);
         
-        Injector injector = Guice.createInjector(new BaseAndClassicModules(ninjaProperties));
+        Injector injector = Guice.createInjector(new MigrationClassicModule(),
+                new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(NinjaProperties.class).toInstance(ninjaProperties);
+                    }
+                });
+                
         
         Provider<MigrationEngine> provider = injector.getProvider(MigrationEngine.class);
         
@@ -57,11 +63,19 @@ public class MigrationEngineProviderTest {
     
     @Test
     public void missingImplementationThrowsExceptionOnUseNotCreate() {
-        NinjaPropertiesImpl ninjaProperties = new NinjaPropertiesImpl(NinjaMode.test);   
+        NinjaPropertiesImpl ninjaProperties = NinjaPropertiesImpl.builder()
+                .withMode(NinjaMode.test)
+                .build();     
         
         ninjaProperties.setProperty(NinjaConstant.MIGRATION_ENGINE_IMPLEMENTATION, "not_existing_implementation");
         
-        Injector injector = Guice.createInjector(new BaseAndClassicModules(ninjaProperties));
+        Injector injector = Guice.createInjector(new MigrationClassicModule(),
+                new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(NinjaProperties.class).toInstance(ninjaProperties);
+                    }
+                });
         
         Provider<MigrationEngine> provider = injector.getProvider(MigrationEngine.class);
         

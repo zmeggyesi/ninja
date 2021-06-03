@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,8 @@ import org.slf4j.Logger;
 import com.google.common.io.ByteStreams;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import models.FormObject;
 import models.FormWithFile;
@@ -112,8 +114,31 @@ public class UploadControllerAuto {
      * with the fact that a file have been received too.
      */
     @FileProvider(DiskFileItemProvider.class)
-    public Result postFormWithFile(Context context, FormWithFile formObject, @Param("file") File file) {
+    public Result postFormWithFile(
+            Context context,
+            FormWithFile formObject,
+            @Param("a") Long valueA,
+            @Param("b") String valueB,
+            @Param("file") File file) {
+        
+        // use context to build a map of all request parameters
+        Map<String,String> parameters = new LinkedHashMap<>();
+        Map<String,String[]> allParams = context.getParameters();
+        if (allParams != null) {
+            allParams.forEach((k,v) -> {
+                parameters.put(k, v[0]);
+            });
+        }
+        
         formObject.fileReceived = file != null ? file.exists() : Boolean.FALSE;
+        
+        if (!parameters.isEmpty()) {
+            formObject.parameters = parameters;
+        }
+        
+        formObject.a = valueA;
+        formObject.b = valueB;
+        
         return Results.json().render(formObject);
     }
 

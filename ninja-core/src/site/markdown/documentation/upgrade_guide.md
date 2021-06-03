@@ -6,6 +6,56 @@ into Ninja's behavior. This document describes which steps are needed to upgrade
 your application to the latest Ninja version. Simply start with your current 
 version and then work your way up to the top of the document.
 
+to 6.7.0
+--------
+
+JPA and Flyway have been migrated to a separate maven module. You can 
+check the configuration inside https://github.com/ninjaframework/ninja/tree/develop/ninja-servlet-jpa-blog-integration-test
+
+But in general you have to do the following:
+
+```java
+
+        <dependency>
+            <groupId>org.ninjaframework</groupId>
+            <artifactId>ninja-db-classic</artifactId>
+            <version>${ninja.version}</version>
+        </dependency>
+```
+
+Modify your Module java to start-up the database support:
+
+
+```java
+@Singleton
+public class Module extends AbstractModule {
+    
+    private final NinjaProperties ninjaProperties;
+    
+    public Module(NinjaProperties ninjaProperties) {
+        this.ninjaProperties = ninjaProperties;
+    }
+    
+    @Override
+    protected void configure() { 
+        
+        install(new JpaModule(ninjaProperties));
+        install(new MigrationClassicModule());
+
+        // ... likely more modules...
+    }
+}
+```
+
+
+to 6.6.0
+--------
+
+- Use ?no_enc instead of noescape. Due to changes in our html templating engine
+  we changed the way how to render unescaped content. Make sure to use something like
+  ${yourVariableThatShouldNotBeEscaped?no_esc} instead of &lt;#noescape&gt;${yourVariableThatShouldNotBeEscaped}&lt;/#noescape&gt;.
+
+
 
 to 6.3.X
 --------
@@ -20,7 +70,7 @@ to 6.3.0
 
 Postoffice is now a separate dependency. Make sure to add the dependency to 
 your pom.xml file and add the module to Modules.java.
-See details in http://www.ninjaframework.org/documentation/sending_mail.html
+See details in https://www.ninjaframework.org/documentation/sending_mail.html
 
 to 6.0.1
 --------

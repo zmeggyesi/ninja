@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package ninja.servlet;
 
+import java.util.Optional;
 import ninja.Bootstrap;
 import ninja.Context;
 import static org.junit.Assert.assertTrue;
@@ -45,9 +46,9 @@ public class NinjaServletBootstrapTest {
     @Test
     public void userSuppliedServletModuleInConfDirectory() {
 
-        ninjaPropertiesImpl = new NinjaPropertiesImpl(NinjaMode.test);
+        ninjaPropertiesImpl = NinjaPropertiesImpl.builder().withMode(NinjaMode.test).build();
         
-        Bootstrap bootstrap = new NinjaServletBootstrap(ninjaPropertiesImpl);
+        Bootstrap bootstrap = new NinjaServletBootstrap(ninjaPropertiesImpl, Optional.empty());
         
         bootstrap.boot();
         
@@ -70,13 +71,13 @@ public class NinjaServletBootstrapTest {
     @Test
     public void userSuppliedServletModuleInShiftedConfDirectory() {
         
-        ninjaPropertiesImpl = Mockito.spy(new NinjaPropertiesImpl(NinjaMode.test));
+        ninjaPropertiesImpl = Mockito.spy(ninjaPropertiesImpl = NinjaPropertiesImpl.builder().withMode(NinjaMode.test).build());
         
         Mockito.when(
                 ninjaPropertiesImpl.get(NinjaConstant.APPLICATION_MODULES_BASE_PACKAGE))
                 .thenReturn("custom_base_package");
         
-        Bootstrap bootstrap = new NinjaServletBootstrap(ninjaPropertiesImpl);
+        Bootstrap bootstrap = new NinjaServletBootstrap(ninjaPropertiesImpl, Optional.empty());
         
         bootstrap.boot();
         

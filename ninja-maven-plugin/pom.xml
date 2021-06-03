@@ -1,6 +1,6 @@
 <!--
 
-    Copyright (C) 2012-2019 the original author or authors.
+    Copyright (C) 2012-2020 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@
     <parent>
         <groupId>org.ninjaframework</groupId>
         <artifactId>ninja</artifactId>
-        <version>7.1.0-SNAPSHOT</version>
+        <version>6.8.2-SNAPSHOT</version>
     </parent>
     
     <artifactId>ninja-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
     
-    <url>http://www.ninjaframework.org</url>
+    <url>https://www.ninjaframework.org</url>
     
     <prerequisites>
         <maven>3.3.9</maven>
@@ -40,6 +40,7 @@
     </properties>
 
     <dependencies>
+        
         <dependency>
             <groupId>org.ninjaframework</groupId>
             <artifactId>ninja-standalone</artifactId>
@@ -63,6 +64,8 @@
             <artifactId>maven-plugin-annotations</artifactId>
             <scope>provided</scope>
         </dependency>
+        
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -90,6 +93,7 @@
             <artifactId>tempus-fugit</artifactId>
             <scope>test</scope>
         </dependency>
+        
     </dependencies>
 
     <build>
@@ -102,7 +106,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.5.2</version>
                 <configuration>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,27 +51,27 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class RouterImplTest {
 
-    Router router;
+    private Router router;
 
     @Mock
-    NinjaProperties ninjaProperties;
-    
-    NinjaBaseDirectoryResolver ninjaBaseDirectoryResolver;
+    private NinjaProperties ninjaProperties;
+
+    private NinjaBaseDirectoryResolver ninjaBaseDirectoryResolver;
 
     @Mock
-    Injector injector;
+    private Injector injector;
 
     @Mock
-    Provider<TestController> testControllerProvider;
+    private Provider<TestController> testControllerProvider;
     
     @Mock
-    WebSockets webSockets;
-    
-    ArgumentCaptor<Route> webSocketsCompileRouteCaptor;
+    private WebSockets webSockets;
+
+    private ArgumentCaptor<Route> webSocketsCompileRouteCaptor;
 
     @Before
     @SuppressWarnings("Convert2Lambda")
-    public void before() {
+    public final void before() {
         webSocketsCompileRouteCaptor = ArgumentCaptor.forClass(Route.class);
         this.ninjaBaseDirectoryResolver = new NinjaBaseDirectoryResolver(ninjaProperties);
         when(webSockets.isEnabled()).thenReturn(true);

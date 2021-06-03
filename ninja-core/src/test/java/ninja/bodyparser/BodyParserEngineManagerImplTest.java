@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public class BodyParserEngineManagerImplTest {
                 bind(BodyParserEngineJson.class);
                 bind(BodyParserEngineXml.class);
                 
-                bind(NinjaProperties.class).toInstance(new NinjaPropertiesImpl(NinjaMode.test));
+                bind(NinjaProperties.class).toInstance(NinjaPropertiesImpl.builder().withMode(NinjaMode.test).build());
 
                 for (Class<?> clazz : toBind) {
 

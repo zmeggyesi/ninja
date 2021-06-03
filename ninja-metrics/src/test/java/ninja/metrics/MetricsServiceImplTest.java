@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,15 +27,15 @@ import com.codahale.metrics.MetricRegistry;
 public class MetricsServiceImplTest {
     
     @Mock
-    NinjaProperties ninjaProperties;
-    
-    MetricsServiceImpl metricsServiceImpl;
+    private NinjaProperties ninjaProperties;
+
+    private MetricsServiceImpl metricsServiceImpl;
     
     @Mock
-    MetricRegistry metricRegistry;
+    private MetricRegistry metricRegistry;
 
     @Before
-    public void before() {
+    public final void before() {
         metricsServiceImpl = new MetricsServiceImpl(metricRegistry, ninjaProperties);
     }
     

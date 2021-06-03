@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package standalone.console;
+package ninja.standalone;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.endsWith;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-
+import java.util.Optional;
 import ninja.utils.NinjaConstant;
 import ninja.utils.NinjaMode;
-import org.hamcrest.CoreMatchers;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.endsWith;
+import static org.hamcrest.CoreMatchers.startsWith;
+
 import org.junit.Test;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class AbstractStandaloneTest {
 
@@ -37,7 +38,7 @@ public class AbstractStandaloneTest {
         
         MockStandalone standalone = new MockStandalone();
         
-        assertThat(standalone.getNinjaMode(), CoreMatchers.is(NinjaMode.dev));
+        assertThat(standalone.getNinjaMode(), is(NinjaMode.dev));
     }
     
     @Test
@@ -47,12 +48,12 @@ public class AbstractStandaloneTest {
                 .externalConfigurationPath("conf/standalone.conf");
         
         // port is still null (before configuration)
-        assertThat(standalone.getPort(), CoreMatchers.is(nullValue()));
+        assertThat(standalone.getPort(), is(nullValue()));
         
         standalone.configure();
         
         // ninja.port in explicit external config worked to override default
-        assertThat(standalone.getPort(), CoreMatchers.is(9000));
+        assertThat(standalone.getPort(), is(9000));
     }
     
     @Test
@@ -64,12 +65,12 @@ public class AbstractStandaloneTest {
                 .configure();
         
         // defaultValue
-        assertThat(standalone.getNinjaMode(), CoreMatchers.is(NinjaMode.prod));
-        assertThat(standalone.getExternalConfigurationPath(), CoreMatchers.is(nullValue()));
-        assertThat(standalone.getContextPath(), CoreMatchers.is(Standalone.DEFAULT_CONTEXT_PATH));
-        assertThat(standalone.getHost(), CoreMatchers.is(Standalone.DEFAULT_HOST));
-        assertThat(standalone.getPort(), CoreMatchers.is(Standalone.DEFAULT_PORT));
-        assertThat(standalone.getIdleTimeout(), CoreMatchers.is(Standalone.DEFAULT_IDLE_TIMEOUT));
+        assertThat(standalone.getNinjaMode(), is(NinjaMode.prod));
+        assertThat(standalone.getExternalConfigurationPath(), is(Optional.empty()));
+        assertThat(standalone.getContextPath(), is(Standalone.DEFAULT_CONTEXT_PATH));
+        assertThat(standalone.getHost(), is(Standalone.DEFAULT_HOST));
+        assertThat(standalone.getPort(), is(Standalone.DEFAULT_PORT));
+        assertThat(standalone.getIdleTimeout(), is(Standalone.DEFAULT_IDLE_TIMEOUT));
 
         
         // configProperty > defaultValue
@@ -77,12 +78,12 @@ public class AbstractStandaloneTest {
                 .externalConfigurationPath("conf/standalone.conf")
                 .configure();
         
-        assertThat(standalone.getNinjaMode(), CoreMatchers.is(NinjaMode.prod));
-        assertThat(standalone.getExternalConfigurationPath(), CoreMatchers.is("conf/standalone.conf"));
-        assertThat(standalone.getContextPath(), CoreMatchers.is("/mycontext"));
-        assertThat(standalone.getHost(), CoreMatchers.is("1.1.1.1"));
-        assertThat(standalone.getPort(), CoreMatchers.is(9000));
-        assertThat(standalone.getIdleTimeout(), CoreMatchers.is(60000L));
+        assertThat(standalone.getNinjaMode(), is(NinjaMode.prod));
+        assertThat(standalone.getExternalConfigurationPath().get(), is("conf/standalone.conf"));
+        assertThat(standalone.getContextPath(), is("/mycontext"));
+        assertThat(standalone.getHost(), is("1.1.1.1"));
+        assertThat(standalone.getPort(), is(9000));
+        assertThat(standalone.getIdleTimeout(), is(60000L));
         
         
         // systemProperty > configProperty
@@ -97,12 +98,12 @@ public class AbstractStandaloneTest {
                     .externalConfigurationPath("conf/standalone.conf")
                     .configure();
             
-            assertThat(standalone.getNinjaMode(), CoreMatchers.is(NinjaMode.dev));
-            assertThat(standalone.getExternalConfigurationPath(), CoreMatchers.is("conf/standalone.conf"));
-            assertThat(standalone.getContextPath(), CoreMatchers.is("/yourcontext"));
-            assertThat(standalone.getHost(), CoreMatchers.is("2.2.2.2"));
-            assertThat(standalone.getPort(), CoreMatchers.is(9001));
-            assertThat(standalone.getIdleTimeout(), CoreMatchers.is(80000L));
+            assertThat(standalone.getNinjaMode(), is(NinjaMode.dev));
+            assertThat(standalone.getExternalConfigurationPath().get(), is("conf/standalone.conf"));
+            assertThat(standalone.getContextPath(), is("/yourcontext"));
+            assertThat(standalone.getHost(), is("2.2.2.2"));
+            assertThat(standalone.getPort(), is(9001));
+            assertThat(standalone.getIdleTimeout(), is(80000L));
             
             
             
@@ -117,12 +118,12 @@ public class AbstractStandaloneTest {
                 .configure();
         
             
-            assertThat(standalone.getNinjaMode(), CoreMatchers.is(NinjaMode.test));
-            assertThat(standalone.getExternalConfigurationPath(), CoreMatchers.is("conf/standalone.conf"));
-            assertThat(standalone.getContextPath(), CoreMatchers.is("/othercontext"));
-            assertThat(standalone.getHost(), CoreMatchers.is("3.3.3.3"));
-            assertThat(standalone.getPort(), CoreMatchers.is(9002));
-            assertThat(standalone.getIdleTimeout(), CoreMatchers.is(70000L));
+            assertThat(standalone.getNinjaMode(), is(NinjaMode.test));
+            assertThat(standalone.getExternalConfigurationPath().get(), is("conf/standalone.conf"));
+            assertThat(standalone.getContextPath(), is("/othercontext"));
+            assertThat(standalone.getHost(), is("3.3.3.3"));
+            assertThat(standalone.getPort(), is(9002));
+            assertThat(standalone.getIdleTimeout(), is(70000L));
             
         } finally {
             System.clearProperty(Standalone.KEY_NINJA_HOST);
@@ -148,7 +149,7 @@ public class AbstractStandaloneTest {
         
         standalone.configure();
         
-        assertThat(standalone.getNinjaProperties(), CoreMatchers.is(not(nullValue())));
+        assertThat(standalone.getNinjaProperties(), is(not(nullValue())));
     }
     
     
@@ -158,8 +159,8 @@ public class AbstractStandaloneTest {
         MockStandalone standalone = new MockStandalone()
                 .configure();
         
-        assertThat(standalone.getServerUrls().get(0), CoreMatchers.is("http://localhost:8080"));
-        assertThat(standalone.getBaseUrls().get(0), CoreMatchers.is("http://localhost:8080"));
+        assertThat(standalone.getServerUrls().get(0), is("http://localhost:8080"));
+        assertThat(standalone.getBaseUrls().get(0), is("http://localhost:8080"));
     }
     
     @Test
@@ -170,8 +171,8 @@ public class AbstractStandaloneTest {
                 .contextPath("/mycontext")
                 .configure();
         
-        assertThat(standalone.getServerUrls().get(0), CoreMatchers.is("http://1.1.1.1:8080"));
-        assertThat(standalone.getBaseUrls().get(0), CoreMatchers.is("http://1.1.1.1:8080/mycontext"));
+        assertThat(standalone.getServerUrls().get(0), is("http://1.1.1.1:8080"));
+        assertThat(standalone.getBaseUrls().get(0), is("http://1.1.1.1:8080/mycontext"));
     }
     
     @Test
@@ -183,8 +184,8 @@ public class AbstractStandaloneTest {
                 .contextPath("/mycontext")
                 .configure();
         
-        assertThat(standalone.getServerUrls().get(0), CoreMatchers.is("http://1.1.1.1"));
-        assertThat(standalone.getBaseUrls().get(0), CoreMatchers.is("http://1.1.1.1/mycontext"));
+        assertThat(standalone.getServerUrls().get(0), is("http://1.1.1.1"));
+        assertThat(standalone.getBaseUrls().get(0), is("http://1.1.1.1/mycontext"));
     }
     
     @Test
@@ -194,7 +195,7 @@ public class AbstractStandaloneTest {
                 .host("1.1.1.1")
                 .configure();
         
-        assertThat(standalone.getNinjaProperties().get(NinjaConstant.serverName), CoreMatchers.is("http://1.1.1.1:8080"));
+        assertThat(standalone.getNinjaProperties().get(NinjaConstant.serverName), is("http://1.1.1.1:8080"));
         
     }
     
@@ -206,7 +207,7 @@ public class AbstractStandaloneTest {
                 .host("1.1.1.1")
                 .configure();
         
-        assertThat(standalone.getNinjaProperties().get(NinjaConstant.serverName), CoreMatchers.is("http://www.example.com:8080"));
+        assertThat(standalone.getNinjaProperties().get(NinjaConstant.serverName), is("http://www.example.com:8080"));
         
     }
     
@@ -224,7 +225,7 @@ public class AbstractStandaloneTest {
         
         standalone.start();
         
-        assertThat(standalone.getInjector(), CoreMatchers.is(not(nullValue())));
+        assertThat(standalone.getInjector(), is(not(nullValue())));
     }
     
     @Test
@@ -261,9 +262,9 @@ public class AbstractStandaloneTest {
                 .port(0)
                 .configure();
         
-        assertThat(standalone.getPort(), CoreMatchers.is(not(0)));
-        assertThat(standalone.isPortEnabled(), CoreMatchers.is(true));
-        assertThat(standalone.isSslPortEnabled(), CoreMatchers.is(false));
+        assertThat(standalone.getPort(), is(not(0)));
+        assertThat(standalone.isPortEnabled(), is(true));
+        assertThat(standalone.isSslPortEnabled(), is(false));
     }
     
     @Test
@@ -273,7 +274,7 @@ public class AbstractStandaloneTest {
                 .sslPort(0)
                 .configure();
         
-        assertThat(standalone.getSslPort(), CoreMatchers.is(not(0)));
+        assertThat(standalone.getSslPort(), is(not(0)));
     }
     
     @Test
@@ -283,10 +284,10 @@ public class AbstractStandaloneTest {
                 .sslPort(8443)
                 .start();
         
-        assertThat(standalone.getSslPort(), CoreMatchers.is(not(0)));
-        assertThat(standalone.isPortEnabled(), CoreMatchers.is(false));
-        assertThat(standalone.isSslPortEnabled(), CoreMatchers.is(true));
-        assertThat(standalone.getServerUrls().size(), CoreMatchers.is(1));
+        assertThat(standalone.getSslPort(), is(not(0)));
+        assertThat(standalone.isPortEnabled(), is(false));
+        assertThat(standalone.isSslPortEnabled(), is(true));
+        assertThat(standalone.getServerUrls().size(), is(1));
         assertThat(standalone.getServerUrls().get(0), endsWith(":8443"));
         assertThat(standalone.getServerUrls().get(0), startsWith("https://"));
     }

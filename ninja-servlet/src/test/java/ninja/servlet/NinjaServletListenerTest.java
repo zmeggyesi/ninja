@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ public class NinjaServletListenerTest {
     String CONTEXT_PATH = "/contextpath";
 
     @Before
-    public void before() {
+    public final void before() {
 
         Mockito.when(servletContextEvent.getServletContext()).thenReturn(servletContext);
         Mockito.when(servletContext.getContextPath()).thenReturn(CONTEXT_PATH);
@@ -85,7 +85,7 @@ public class NinjaServletListenerTest {
     public void testCreatingInjectorWithCustomNinjaPropertiesWorks() {
 
         // setup stuff
-        NinjaPropertiesImpl ninjaProperties = new NinjaPropertiesImpl(NinjaMode.test);
+        NinjaPropertiesImpl ninjaProperties = NinjaPropertiesImpl.builder().withMode(NinjaMode.test).build();
         ninjaProperties.setProperty("key!", "value!");
 
         NinjaServletListener ninjaServletListener = new NinjaServletListener();
@@ -109,7 +109,7 @@ public class NinjaServletListenerTest {
     public void testCreatingInjectorWithCustomModulesPackageWorks() {
 
         // setup stuff
-        NinjaPropertiesImpl ninjaProperties = new NinjaPropertiesImpl(NinjaMode.test);
+        NinjaPropertiesImpl ninjaProperties = NinjaPropertiesImpl.builder().withMode(NinjaMode.test).build();
         ninjaProperties.setProperty(NinjaConstant.APPLICATION_MODULES_BASE_PACKAGE, "ninja.servlet");
 
         NinjaServletListener ninjaServletListener = new NinjaServletListener();
@@ -169,7 +169,7 @@ public class NinjaServletListenerTest {
     public void testThatSettingNinjaPropertiesTwiceDoesNotWork() {
 
         NinjaServletListener ninjaServletListener = new NinjaServletListener();
-        NinjaPropertiesImpl ninjaProperties = new NinjaPropertiesImpl(NinjaMode.test);
+        NinjaPropertiesImpl ninjaProperties = NinjaPropertiesImpl.builder().withMode(NinjaMode.test).build();
 
         // first setting works
         ninjaServletListener.setNinjaProperties(ninjaProperties);

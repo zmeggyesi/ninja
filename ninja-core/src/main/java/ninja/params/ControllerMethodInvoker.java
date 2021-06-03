@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -172,7 +172,7 @@ public class ControllerMethodInvoker {
             String message = "Using deprecated non-strict mode for injection of parameters into controller "
                     + "(" + NinjaConstant.NINJA_STRICT_ARGUMENT_EXTRACTORS + " = false). "
                     + "This mode will soon be removed from Ninja. Make sure you upgrade your application as soon as possible. "
-                    + "More: http://www.ninjaframework.org/documentation/basic_concepts/controllers.html 'A note about null and Optional'.";
+                    + "More: https://www.ninjaframework.org/documentation/basic_concepts/controllers.html 'A note about null and Optional'.";
             logger.warn(message);
             nonStrictModeWarningLoggedAlready = true;
         }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,16 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
+
+
 public class ArticleDao {
    
     @Inject
     Provider<EntityManager> entitiyManagerProvider;
+    
+    private final static PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
     
     @UnitOfWork
     public ArticlesDto getAllArticles() {
@@ -104,8 +110,9 @@ public class ArticleDao {
         if (user == null) {
             return false;
         }
-        
-        Article article = new Article(user, articleDto.title, articleDto.content);
+        String title  = sanitizer.sanitize(articleDto.title);
+        String content  = sanitizer.sanitize(articleDto.content);
+        Article article = new Article(user, title, content);
         entityManager.persist(article);
         
         return true;

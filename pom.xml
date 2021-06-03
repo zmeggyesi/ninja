@@ -1,6 +1,6 @@
 <!--
 
-    Copyright (C) 2012-2019 the original author or authors.
+    Copyright (C) 2012-2020 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@
     <groupId>org.ninjaframework</groupId>
     <artifactId>ninja</artifactId>
     <packaging>pom</packaging>
-    <version>7.1.0-SNAPSHOT</version>
-    <url>http://www.ninjaframework.org</url>
+    <version>6.8.2-SNAPSHOT</version>
+    <url>https://www.ninjaframework.org</url>
     <name>${project.artifactId}</name>
     <description>Ninja is a full stack web framework for Java.
         Rock solid, fast, and super productive.</description>
@@ -59,6 +59,7 @@
         <module>ninja-metrics-librato</module>
         <module>ninja-metrics-influxdb</module>
         <module>ninja-servlet</module>
+        <module>ninja-db-classic</module>
         <module>ninja-standalone</module>
         <module>ninja-test-utilities</module>
         <module>ninja-servlet-integration-test</module>
@@ -73,15 +74,15 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>11</java.version>
+        <java.version>1.8</java.version>
         <siteProjectVersion>${project.version}</siteProjectVersion>
-        <jetty.version>9.4.18.v20190429</jetty.version>
+        <jetty.version>9.4.38.v20210224</jetty.version>
         <hibernate.version>4.3.8.Final</hibernate.version>
-        <jackson.version>2.9.8</jackson.version>
-        <guice.version>4.2.2</guice.version>
+        <jackson.version>2.12.2</jackson.version>
+        <guice.version>5.0.1</guice.version>
         <metrics.version>3.2.6</metrics.version>
-        <slf4j.version>1.7.26</slf4j.version>
-        <powermock.version>2.0.2</powermock.version>
+        <slf4j.version>1.7.30</slf4j.version>
+        <powermock.version>2.0.9</powermock.version>
         <!-- Formatting options for Netbeans IDE -->
         <org-netbeans-modules-editor-indent.CodeStyle.usedProfile>project</org-netbeans-modules-editor-indent.CodeStyle.usedProfile>
         <org-netbeans-modules-editor-indent.CodeStyle.project.spaces-per-tab>4</org-netbeans-modules-editor-indent.CodeStyle.project.spaces-per-tab>
@@ -95,30 +96,11 @@
 
     <!-- Fix version 1.8 of java compiler in all submodules: -->
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-toolchains-plugin</artifactId>
-                <version>1.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>toolchain</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <toolchains>
-                        <jdk>
-                            <version>11</version>
-                        </jdk>
-                    </toolchains>
-                </configuration>
-            </plugin>
-        </plugins>
 
         <pluginManagement>
+        
             <plugins>
+                
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5.3</version>
@@ -137,9 +119,8 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
+                    <version>3.8.1</version>
                     <configuration>
-                        <release>${java.version}</release>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
                     </configuration>
@@ -244,7 +225,7 @@
                     <version>3.0.1</version>
                 </plugin>
                 
-                    <plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>1.4.1</version>
@@ -469,6 +450,12 @@
                 <artifactId>ninja-servlet</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            
+            <dependency>
+                <groupId>org.ninjaframework</groupId>
+                <artifactId>ninja-db-classic</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         
             <dependency>
                 <groupId>org.ninjaframework</groupId>
@@ -508,21 +495,14 @@
                 <artifactId>guice-assistedinject</artifactId>
                 <version>${guice.version}</version>
             </dependency>
-            
-            <dependency>
-                <groupId>com.google.inject.extensions</groupId>
-                <artifactId>guice-multibindings</artifactId>
-                <version>${guice.version}</version>
-            </dependency> 
-            
+
             <!-- We use Jackson for rendering jsons: -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
-
-
+            
             <!-- XML parsing -->
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -550,14 +530,14 @@
             <dependency>
                 <groupId>org.freemarker</groupId>
                 <artifactId>freemarker-gae</artifactId>
-                <version>2.3.28</version>
+                <version>2.3.29</version>
             </dependency>
 
             <!-- guava is just cool -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>27.1-jre</version>
+                <version>30.1-jre</version>
             </dependency>
 
             <!-- reflections is used for classpath scanning -->
@@ -571,7 +551,7 @@
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
-                <version>1.12</version>
+                <version>1.15</version>
             </dependency>
 
             <!-- Enrcyption library providing support for blowfish -->
@@ -587,7 +567,12 @@
                 <artifactId>logback-classic</artifactId>
                 <version>1.2.3</version>
             </dependency>
-		
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
             <!-- Replace commons-logging with slf4j bridge (that will use logback)-->
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -606,13 +591,13 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.6</version>
+                <version>2.8.0</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.9</version>
+                <version>3.12.0</version>
             </dependency>
 
             <dependency>
@@ -710,27 +695,21 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>3.1.0</version>
+                <version>4.0.1</version>
             </dependency>
             
             <dependency>
-                <groupId>jakarta.websocket</groupId>
-                <artifactId>jakarta.websocket-client-api</artifactId>
-                <version>1.2.2</version>
+                <groupId>javax.websocket</groupId>
+                <artifactId>javax.websocket-api</artifactId>
+                <version>1.1</version>
             </dependency>
-
+            
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-server</artifactId>
                 <version>${jetty.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-util</artifactId>
-                <version>${jetty.version}</version>
-            </dependency>
-
+        
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-servlet</artifactId>
@@ -747,16 +726,6 @@
                 <groupId>org.eclipse.jetty.websocket</groupId>
                 <artifactId>javax-websocket-server-impl</artifactId>
                 <version>${jetty.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>javax.websocket</groupId>
-                        <artifactId>javax.websocket-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>javax.websocket</groupId>
-                        <artifactId>javax.websocket-client-api</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             
             <dependency>
@@ -804,7 +773,7 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>4.5.8</version>
+                <version>4.5.13</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>commons-logging</artifactId>
@@ -816,7 +785,7 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpmime</artifactId>
-                <version>4.5.8</version>
+                <version>4.5.13</version>
             </dependency>
         
             <!-- Testing -->
@@ -838,7 +807,7 @@
             <dependency>
                 <groupId>org.fluentlenium</groupId>
                 <artifactId>fluentlenium-junit</artifactId>
-                <version>3.4.1</version>
+                <version>3.10.1</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>commons-logging</artifactId>
@@ -849,7 +818,7 @@
             <dependency>
                 <groupId>org.seleniumhq.selenium</groupId>
                 <artifactId>htmlunit-driver</artifactId>
-                <version>2.31.0</version>
+                <version>2.47.1</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>commons-logging</artifactId>
@@ -858,6 +827,7 @@
                 </exclusions>
             </dependency>
 
+            <!-- deprecated. Please use assertj instead. It's better. -->
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>java-hamcrest</artifactId>
@@ -866,16 +836,23 @@
             </dependency>
             
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.12</version>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>3.19.0</version>
                 <scope>test</scope>
             </dependency>
-                        
+            
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13.2</version>
+                <scope>test</scope>
+            </dependency>
+                     
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>2.27.0</version>
+                <version>3.8.0</version>
                 <scope>test</scope>
             </dependency>
             
@@ -889,7 +866,7 @@
             <dependency>
                 <groupId>com.icegreen</groupId>
                 <artifactId>greenmail</artifactId>
-                <version>1.5.10</version>
+                <version>1.6.2</version>
                 <scope>test</scope>
             </dependency>
             
@@ -922,11 +899,7 @@
                 <version>6.0</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>jakarta.websocket</groupId>
-                <artifactId>jakarta.websocket-api</artifactId>
-                <version>1.2.2</version>
-            </dependency>
+            
         </dependencies>
         
         

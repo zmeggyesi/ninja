@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,17 @@
 
 package test;
 
-import java.util.Optional;
-
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import ninja.jpa.JpaInitializer;
 import ninja.jpa.JpaModule;
 import ninja.utils.NinjaMode;
 import ninja.utils.NinjaModeHelper;
 import ninja.utils.NinjaPropertiesImpl;
-
 import org.junit.After;
 import org.junit.Before;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import java.util.Optional;
 
 /**
  * Base class for testing JPA-based DAOs
@@ -50,7 +48,7 @@ public abstract class NinjaDaoTestBase {
      */
     private Injector injector;
 
-    private NinjaMode ninjaMode;
+    private final NinjaMode ninjaMode;
 
     /**
      * Constructor checks if NinjaMode was set in System properties, if not,
@@ -59,7 +57,7 @@ public abstract class NinjaDaoTestBase {
     public NinjaDaoTestBase() {
         Optional<NinjaMode> mode = NinjaModeHelper
                 .determineModeFromSystemProperties();
-        ninjaMode = mode.isPresent() ? mode.get() : NinjaMode.test;
+        ninjaMode = mode.orElse(NinjaMode.test);
 
     }
 
@@ -74,7 +72,7 @@ public abstract class NinjaDaoTestBase {
 
     @Before
     public final void initialize() {
-        NinjaPropertiesImpl ninjaProperties = new NinjaPropertiesImpl(ninjaMode);
+        NinjaPropertiesImpl ninjaProperties = NinjaPropertiesImpl.builder().withMode(ninjaMode).build();
         injector = Guice.createInjector(new JpaModule(ninjaProperties));
         jpaInitializer = injector.getInstance(JpaInitializer.class);
         jpaInitializer.start();
@@ -82,7 +80,9 @@ public abstract class NinjaDaoTestBase {
 
     @After
     public final void stop() {
-        jpaInitializer.stop();
+        if (jpaInitializer != null) {
+            jpaInitializer.stop();
+        }
     }
 
     /**

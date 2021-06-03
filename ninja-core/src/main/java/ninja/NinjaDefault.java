@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,17 @@
 
 package ninja;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 
 import javax.management.RuntimeErrorException;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
 import ninja.diagnostics.DiagnosticError;
 import ninja.diagnostics.DiagnosticErrorBuilder;
 import ninja.exceptions.BadRequestException;
@@ -50,7 +55,7 @@ public class NinjaDefault implements Ninja {
             + " _______  .___ _______        ____.  _____   \n"
             + " \\      \\ |   |\\      \\      |    | /  _  \\  \n"
             + " /   |   \\|   |/   |   \\     |    |/  /_\\  \\ \n"
-            + "/    |    \\   /    |    \\/\\__|    /    |    \\  http://www.ninjaframework.org\n"
+            + "/    |    \\   /    |    \\/\\__|    /    |    \\  https://www.ninjaframework.org\n"
             + "\\____|__  /___\\____|__  /\\________\\____|__  /  @ninjaframework\n"
             + "     web\\/framework   \\/                  \\/   {}\n";
     
@@ -145,9 +150,9 @@ public class NinjaDefault implements Ninja {
     
     @Override
     public void onFrameworkStart() {
-
-        showSplashScreenViaLogger();
-                
+        if (ninjaProperties.getBooleanWithDefault(NinjaConstant.NINJA_SPLASH_DISPLAY, true)) {
+            showSplashScreenViaLogger();
+        }
         lifecycleService.start();
     }
 
@@ -477,9 +482,16 @@ public class NinjaDefault implements Ninja {
     private final void showSplashScreenViaLogger() {
         
         String ninjaVersion = readNinjaVersion();
-        
-        // log Ninja splash screen
-        logger.info(NINJA_LOGO, ninjaVersion);
+
+        // log Ninja splash screen, from resources if available (so it can be overridden)
+        String NINJA_LOGO_LOCATION = "ninja/logo.txt";
+        try (InputStream is = this.getClass().getClassLoader().getResourceAsStream(NINJA_LOGO_LOCATION);) {
+            InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(is), Charsets.UTF_8);
+            logger.info(CharStreams.toString(reader), ninjaVersion);
+        } catch (IOException | NullPointerException e) {
+            // if anything happens, use the old one
+            logger.info(NINJA_LOGO, ninjaVersion);
+        }
         
     }
 

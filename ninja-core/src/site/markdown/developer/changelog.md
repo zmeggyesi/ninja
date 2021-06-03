@@ -1,9 +1,53 @@
-Version x.x.x
+Version 6.8.2
 =============
 
+* 2021-03-19 Streamline tests (asolntsev)
+* 2021-03-19 Updated Guice dependency to 5.0.1 (asolntsev)
+* 2021-03-19 Updated dependencies: slf4j:1.7.30, jackson:2.12.2, httpclient:4.5.13, commons-codec:1.15 (asolntsev)
+* 2021-03-19 Updated test dependencies: junit:4.13.2, mockito:3.8.0, powermock:2.0.9, greenmail:1.6.2, fluentlenium:3.10.1 (asolntsev)
+* 2021-03-18 Updated Jetty dependency to 9.4.38.v20210224 (asolntsev)
+
+Version 6.8.1
+=============
+
+* 2021-02-13 Move to https for ninjaframework.org. Replace all old occurrences.
+
+Version 6.8.0
+=============
+
+* 2021-02-12 Allow to override modules and properties in NinjaTestServer (ra)
+
+
+Version 6.7.0
+=============
+
+* 2021-02-10 Upgrade license headers (ra)
+* 2021-02-09 Flyway and JPA now separate module (ninja-db-classic). Makes ninja-core smaller. (ra)
+* 2021-02-09 Upgrade junit (ra)
+* 2021-01-30 Include query string parameters if multi-part file upload logic is used (jjlauer)
+* 2021-01-30 Updated Guava dependency to v30.1
+* 2021-01-30 Updated Guice dependency to v4.2.3
+* 2021-01-30 Updated Jetty dependency to v9.4.35
+* 2021-01-30 Updated commons-lang3 dependency to v3.11
+* 2021-01-30 Updated servlet-api dependency to v4.0.1
+* 2021-01-30 Fix for Chrome, Android, etc. browsers setting signed-exchange Accept header as highest precedence (jjlauer)
+* 2021-01-30 Update development cert and keystore to .p12 format, new expiration date of 2031
+* 2019-05-19 Fix width of sidebar in website
+
+Version 6.6.1
+=============
+
+* 2019-10-11 Configuration property `ninja.splash.display` can turn off boot logo; logo overridable with `ninja/logo.txt`
+* 2020-01-21 Upgrade source to year 2020
+
+
+Version 6.6.0
+=============
+
+* 2019-10-06 Switch to Freemarker's build in-html escaping + improved escaping showcase in jpa blog (llenrup)
+* 2019-09-20 Use customized content types in Accept header (fallback to text/html preserved for null and empty string)
 * 2019-07-20 New migration properties: `ninja.migration.locations` and `ninja.migration.schemas` (pi0tr)
 * 2019-05-05 Website now compatible with new maven site / doxia plugins
-
 
 Version 6.5.0
 =============
@@ -286,7 +330,7 @@ Version 5.1.0
 =============
 
  * 2015-03-25 Bump to Jetty 9.2.10.v20150310 (ra) 
- * 2015-03-19 (PR #329) ninja-core supports new "Diagnostics" extension for DEV mode. See http://www.ninjaframework.org/documentation/configuration_and_modes.html for more info (jjlauer)
+ * 2015-03-19 (PR #329) ninja-core supports new "Diagnostics" extension for DEV mode. See https://www.ninjaframework.org/documentation/configuration_and_modes.html for more info (jjlauer)
  * 2015-03-16 (PR #333) ninja-standalone will System.exit on any startup exception (previously it only exited in some cases, kept running in failed state for others) (jjlauer)
  * 2015-03-16 (PR #333) ninja-standalone support for binding to specific host/address (e.g. -Dninja.host=localhost) (jjlauer)
  * 2015-03-16 (PR #333) ninja-standalone support for advanced/power-user jetty configuration(s) (e.g. -Dninja.jetty.configuration=jetty.xml,jetty-ssl.xml) (jjlauer)
@@ -808,7 +852,7 @@ Version 1.4
  * Added Optional (guava) support to Messages and Lang
  * Added modules documentation page (ra).
  * Replaced potentially harmful SimpleDateFormatter with JodaTime. SDF is not thread safe... (ra)
- * Better printing of numbers in Freemarker Templating Engine (See also: http://freemarker.sourceforge.net/docs/app_faq.html#faq_number_grouping)
+ * Better printing of numbers in Freemarker Templating Engine (See also: https://freemarker.sourceforge.net/docs/app_faq.html#faq_number_grouping)
  * Better error handling for templating exceptions (ra)
  * Brand new maven archetype ninja-core-demo-archetype for really simple project generation... (ra)
 

@@ -1,6 +1,6 @@
 <!--
 
-    Copyright (C) 2012-2019 the original author or authors.
+    Copyright (C) 2012-2020 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,12 +25,12 @@
     <parent>
         <groupId>org.ninjaframework</groupId>
         <artifactId>ninja</artifactId>
-        <version>7.1.0-SNAPSHOT</version>
+        <version>6.8.2-SNAPSHOT</version>
     </parent>
 
     <organization>
         <name>ninjaframework</name>
-        <url>http://www.ninjaframework.org</url>
+        <url>https://www.ninjaframework.org</url>
     </organization>
 
 
@@ -232,14 +232,13 @@
         </dependency>
         
         <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+        </dependency>
+        
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hamcrest</groupId>
-                    <artifactId>hamcrest-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -255,12 +254,7 @@
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-api-mockito2</artifactId>
-        </dependency>  
-        
-         <dependency>
-            <groupId>com.google.inject.extensions</groupId>
-            <artifactId>guice-multibindings</artifactId>
-        </dependency> 
+        </dependency>
         
         <!-- Jaxb was removed from Java 9 and onwards. So we add the dependency explicitly -->
         <dependency>

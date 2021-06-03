@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ public abstract class NinjaFluentLeniumTest extends FluentTest {
     public NinjaTestServer ninjaTestServer;
 
     @Before
-    public void startupServer() {
-        ninjaTestServer = new NinjaTestServer();
+    public final void startupServer() {
+        ninjaTestServer = NinjaTestServer.builder().build();
     }
 
     /**
@@ -83,8 +83,10 @@ public abstract class NinjaFluentLeniumTest extends FluentTest {
     }
 
     @After
-    public void shutdownServer() {
-        ninjaTestServer.shutdown();
+    public final void shutdownServer() {
+        if (ninjaTestServer != null) {
+            ninjaTestServer.shutdown();
+        }
     }
 
     public Injector getInjector() {

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,9 +46,9 @@ public interface Standalone<T extends Standalone> extends Console<T> {
     Integer DEFAULT_SSL_PORT                            = -1;                   // disabled by default
     
     // only defaults in dev & test mode
-    String DEFAULT_DEV_NINJA_SSL_KEYSTORE_URI           = "classpath:/ninja/standalone/ninja-development.keystore";
+    String DEFAULT_DEV_NINJA_SSL_KEYSTORE_URI           = "classpath:/ninja/standalone/ninja-development.p12";
     String DEFAULT_DEV_NINJA_SSL_KEYSTORE_PASSWORD      = "password";
-    String DEFAULT_DEV_NINJA_SSL_TRUSTSTORE_URI         = "classpath:/ninja/standalone/ninja-development.truststore";
+    String DEFAULT_DEV_NINJA_SSL_TRUSTSTORE_URI         = "classpath:/ninja/standalone/ninja-development.p12";
     String DEFAULT_DEV_NINJA_SSL_TRUSTSTORE_PASSWORD    = "password";
 
     /**

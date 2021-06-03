@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2012-2019 the original author or authors.
+    Copyright (C) 2012-2020 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -33,10 +33,10 @@
     <parent>
         <groupId>org.ninjaframework</groupId>
         <artifactId>ninja</artifactId>
-        <version>7.1.0-SNAPSHOT</version>
+        <version>6.8.2-SNAPSHOT</version>
     </parent>
 
-    <url>http://www.ninjaframework.org</url>
+    <url>https://www.ninjaframework.org</url>
 
     <build>
         <plugins>
@@ -126,7 +126,7 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>ninja.standalone.console.NinjaJetty</mainClass>
+                                    <mainClass>ninja.standalone.NinjaJetty</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -177,12 +177,29 @@
             <groupId>org.ninjaframework</groupId>
             <artifactId>ninja-servlet</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>org.ninjaframework</groupId>
+            <artifactId>ninja-db-classic</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.ninjaframework</groupId>
             <artifactId>ninja-test-utilities</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+        </dependency>
+        
+                <!--  to sanitise input so no XSS -->
+        <dependency>
+		    <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+		    <artifactId>owasp-java-html-sanitizer</artifactId>
+		    <version>20190610.1</version>
+		</dependency>
 
     </dependencies>
 

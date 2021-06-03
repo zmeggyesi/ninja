@@ -1,11 +1,11 @@
-/*
- * Copyright (C) 2012-2019 the original author or authors.
+/**
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,15 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package ninja;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Optional;
 
 import ninja.diagnostics.DiagnosticError;
 import ninja.exceptions.BadRequestException;
@@ -34,51 +27,59 @@ import ninja.utils.Message;
 import ninja.utils.NinjaConstant;
 import ninja.utils.NinjaProperties;
 import ninja.utils.ResultHandler;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Optional;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NinjaDefaultTest {
 
     @Mock
-    LifecycleService lifecylceService;
+    private LifecycleService lifecylceService;
 
     @Mock
-    ResultHandler resultHandler;
+    private ResultHandler resultHandler;
 
     @Mock
-    Router router;
+    private Router router;
 
     @Mock
-    Context.Impl contextImpl;
+    private Context.Impl contextImpl;
 
     @Mock
-    Messages messages;
+    private Messages messages;
 
     @Mock
-    Result result;
+    private Result result;
 
     @Mock
-    NinjaProperties ninjaProperties;
+    private NinjaProperties ninjaProperties;
 
-    Route route;
+    private Route route;
 
     @Captor
-    ArgumentCaptor<Result> resultCaptor;
+    private ArgumentCaptor<Result> resultCaptor;
 
-    NinjaDefault ninjaDefault;
+    private NinjaDefault ninjaDefault;
 
     @Before
-    public void before() {
+    public final void before() {
 
         ninjaDefault = Mockito.spy(new NinjaDefault());
         ninjaDefault.lifecycleService = lifecylceService;
@@ -101,7 +102,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testOnRouteRequestWhenEverythingWorks() throws Exception {
+    public void testOnRouteRequestWhenEverythingWorks() {
 
         FilterChain filterChain = Mockito.mock(FilterChain.class);
         Mockito.when(route.getFilterChain()).thenReturn(filterChain);
@@ -122,7 +123,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testOnRouteRequestWhenException() throws Exception {
+    public void testOnRouteRequestWhenException() {
 
         Exception exception
                 = new RuntimeException("That's a very generic exception that should be handled by onError!");
@@ -139,7 +140,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testOnRouteRequestWhenInternalServerErrorException() throws Exception {
+    public void testOnRouteRequestWhenInternalServerErrorException() {
 
         FilterChain filterChain = Mockito.mock(FilterChain.class);
         Mockito.when(route.getFilterChain()).thenReturn(filterChain);
@@ -156,7 +157,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testOnRouteRequestWhenInternalServerErrorExceptionInDiagnosticMode() throws Exception {
+    public void testOnRouteRequestWhenInternalServerErrorExceptionInDiagnosticMode() {
 
         FilterChain filterChain = Mockito.mock(FilterChain.class);
         Mockito.when(route.getFilterChain()).thenReturn(filterChain);
@@ -176,7 +177,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testOnRouteRequestWhenOnBadRequest() throws Exception {
+    public void testOnRouteRequestWhenOnBadRequest() {
 
         FilterChain filterChain = Mockito.mock(FilterChain.class);
         Mockito.when(route.getFilterChain()).thenReturn(filterChain);
@@ -193,7 +194,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testOnRouteRequestWhenOnBadRequestInDiagnosticMode() throws Exception {
+    public void testOnRouteRequestWhenOnBadRequestInDiagnosticMode() {
 
         FilterChain filterChain = Mockito.mock(FilterChain.class);
         Mockito.when(route.getFilterChain()).thenReturn(filterChain);
@@ -213,7 +214,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testOnRouteRequestWhenForbiddenRequest() throws Exception {
+    public void testOnRouteRequestWhenForbiddenRequest() {
 
         FilterChain filterChain = Mockito.mock(FilterChain.class);
         Mockito.when(route.getFilterChain()).thenReturn(filterChain);
@@ -230,7 +231,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testOnRouteRequestWhenForbiddenRequestInDiagnosticMode() throws Exception {
+    public void testOnRouteRequestWhenForbiddenRequestInDiagnosticMode() {
 
         FilterChain filterChain = Mockito.mock(FilterChain.class);
         Mockito.when(route.getFilterChain()).thenReturn(filterChain);
@@ -250,7 +251,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testOnRouteRequestWhenOnNotFound() throws Exception {
+    public void testOnRouteRequestWhenOnNotFound() {
 
         // This simulates that a route has not been found
         // subsequently the onNotFound method should be called.
@@ -267,7 +268,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testOnRouteRequestWhenOnNotFoundInDiagnosticMode() throws Exception {
+    public void testOnRouteRequestWhenOnNotFoundInDiagnosticMode() {
 
         // This simulates that a route has not been found
         // subsequently the onNotFound method should be called.
@@ -288,7 +289,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testOnRouteRequestWhenOnNotFoundException() throws Exception {
+    public void testOnRouteRequestWhenOnNotFoundException() {
 
         FilterChain filterChain = Mockito.mock(FilterChain.class);
         Mockito.when(route.getFilterChain()).thenReturn(filterChain);
@@ -305,7 +306,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testOnRouteRequestWhenOnNotFoundExceptionInDiagnosticMode() throws Exception {
+    public void testOnRouteRequestWhenOnNotFoundExceptionInDiagnosticMode() {
 
         FilterChain filterChain = Mockito.mock(FilterChain.class);
         Mockito.when(route.getFilterChain()).thenReturn(filterChain);
@@ -373,7 +374,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testThatGetInternalServerErrorContentNegotiation() throws Exception {
+    public void testThatGetInternalServerErrorContentNegotiation() {
         Result result = ninjaDefault.getInternalServerErrorResult(contextImpl, new Exception("not important"), null);
         assertThat(result.getContentType(), equalTo(null));
         assertThat(result.supportedContentTypes().size(), equalTo(3));
@@ -381,13 +382,13 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testThatGetInternalServerErrorDoesFallsBackToHtml() throws Exception {
+    public void testThatGetInternalServerErrorDoesFallsBackToHtml() {
         Result result = ninjaDefault.getInternalServerErrorResult(contextImpl, new Exception("not important"), null);
         assertThat(result.fallbackContentType().get(), equalTo(Result.TEXT_HTML));
     }
 
     @Test
-    public void getInternalServerErrorResult() throws Exception {
+    public void getInternalServerErrorResult() {
 
         when(ninjaProperties.getWithDefault(
                 ArgumentMatchers.eq(NinjaConstant.LOCATION_VIEW_HTML_INTERNAL_SERVER_ERROR_KEY),
@@ -424,7 +425,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testThatGetBadRequestContentNegotiation() throws Exception {
+    public void testThatGetBadRequestContentNegotiation() {
         Result result = ninjaDefault.getBadRequestResult(contextImpl, new BadRequestException("not important"));
         assertThat(result.getContentType(), equalTo(null));
         assertThat(result.supportedContentTypes().size(), equalTo(3));
@@ -432,13 +433,13 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testThatGetBadRequestDoesFallsBackToHtml() throws Exception {
+    public void testThatGetBadRequestDoesFallsBackToHtml() {
         Result result = ninjaDefault.getBadRequestResult(contextImpl, new BadRequestException("not important"));
         assertThat(result.fallbackContentType().get(), equalTo(Result.TEXT_HTML));
     }
 
     @Test
-    public void testGetBadRequest() throws Exception {
+    public void testGetBadRequest() {
 
         when(ninjaProperties.getWithDefault(
                 ArgumentMatchers.eq(NinjaConstant.LOCATION_VIEW_HTML_BAD_REQUEST_KEY),
@@ -475,7 +476,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testThatGetForbiddenRequestContentNegotiation() throws Exception {
+    public void testThatGetForbiddenRequestContentNegotiation() {
         Result result = ninjaDefault.getForbiddenResult(contextImpl, new ForbiddenRequestException("not important"));
         assertThat(result.getContentType(), equalTo(null));
         assertThat(result.supportedContentTypes().size(), equalTo(3));
@@ -483,13 +484,13 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testThatGetForbiddenRequestDoesFallsBackToHtml() throws Exception {
+    public void testThatGetForbiddenRequestDoesFallsBackToHtml() {
         Result result = ninjaDefault.getForbiddenResult(contextImpl, new ForbiddenRequestException("not important"));
         assertThat(result.fallbackContentType().get(), equalTo(Result.TEXT_HTML));
     }
 
     @Test
-    public void testGetForbiddenRequest() throws Exception {
+    public void testGetForbiddenRequest() {
 
         when(ninjaProperties.getWithDefault(
                 ArgumentMatchers.eq(NinjaConstant.LOCATION_VIEW_HTML_FORBIDDEN_KEY),
@@ -526,7 +527,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testThatGetOnNotFoundDoesContentNegotiation() throws Exception {
+    public void testThatGetOnNotFoundDoesContentNegotiation() {
         Result result = ninjaDefault.getNotFoundResult(contextImpl);
         assertThat(result.getContentType(), equalTo(null));
         assertThat(result.supportedContentTypes().size(), equalTo(3));
@@ -534,13 +535,13 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testThatGetOnNotFoundDoesFallsBackToHtml() throws Exception {
+    public void testThatGetOnNotFoundDoesFallsBackToHtml() {
         Result result = ninjaDefault.getNotFoundResult(contextImpl);
         assertThat(result.fallbackContentType().get(), equalTo(Result.TEXT_HTML));
     }
 
     @Test
-    public void testGetOnNotFoundResultWorks() throws Exception {
+    public void testGetOnNotFoundResultWorks() {
 
         when(ninjaProperties.getWithDefault(
                 ArgumentMatchers.eq(NinjaConstant.LOCATION_VIEW_HTML_NOT_FOUND_KEY),
@@ -566,7 +567,7 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testThatGetOnNotFoundExceptionDoesContentNegotiation() throws Exception {
+    public void testThatGetOnNotFoundExceptionDoesContentNegotiation() {
         Result result = ninjaDefault.getNotFoundResult(contextImpl, new RequestNotFoundException("not important"));
         assertThat(result.getContentType(), equalTo(null));
         assertThat(result.supportedContentTypes().size(), equalTo(3));
@@ -574,13 +575,13 @@ public class NinjaDefaultTest {
     }
 
     @Test
-    public void testThatGetOnNotFoundExceptionDoesFallsBackToHtml() throws Exception {
+    public void testThatGetOnNotFoundExceptionDoesFallsBackToHtml() {
         Result result = ninjaDefault.getNotFoundResult(contextImpl, new RequestNotFoundException("not important"));
         assertThat(result.fallbackContentType().get(), equalTo(Result.TEXT_HTML));
     }
 
     @Test
-    public void testGetOnNotFoundExceptionResultWorks() throws Exception {
+    public void testGetOnNotFoundExceptionResultWorks() {
 
         when(ninjaProperties.getWithDefault(
                 ArgumentMatchers.eq(NinjaConstant.LOCATION_VIEW_HTML_NOT_FOUND_KEY),

@@ -1,6 +1,6 @@
 <!--
 
-    Copyright (C) 2012-2019 the original author or authors.
+    Copyright (C) 2012-2020 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,12 +25,13 @@
     <parent>
         <groupId>org.ninjaframework</groupId>
         <artifactId>ninja</artifactId>
-        <version>7.1.0-SNAPSHOT</version>
+        <version>6.8.2-SNAPSHOT</version>
     </parent>
     
-    <url>http://www.ninjaframework.org</url>
+    <url>https://www.ninjaframework.org</url>
 
     <dependencies>
+        
         <!-- ninja-core is needed so that correct dependencies are on classpath.  -->
         <!-- with ninja-standalone alone it is one level too deep and other dependencies -->
         <!-- get higher priority. -->
@@ -39,16 +40,16 @@
             <artifactId>ninja-core</artifactId>
             <scope>compile</scope>
         </dependency>
-
+        
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
+            <groupId>org.ninjaframework</groupId>
+            <artifactId>ninja-standalone</artifactId>
             <scope>compile</scope>
         </dependency>
         
         <dependency>
             <groupId>org.ninjaframework</groupId>
-            <artifactId>ninja-standalone</artifactId>
+            <artifactId>ninja-db-classic</artifactId>
             <scope>compile</scope>
         </dependency>
 
@@ -58,6 +59,11 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>java-hamcrest</artifactId>
             <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
         </dependency>
         
         <dependency>
@@ -76,21 +82,12 @@
         <dependency>
             <groupId>org.fluentlenium</groupId>
             <artifactId>fluentlenium-junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.fluentlenium</groupId>
-            <artifactId>fluentlenium-core</artifactId>
-            <version>3.4.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>htmlunit-driver</artifactId>
+            <scope>compile</scope>
         </dependency>
         <!-- selenium uses jetty-client and has a version conflict with ours.
           We must declare these to force the version to ours or websockets will break -->

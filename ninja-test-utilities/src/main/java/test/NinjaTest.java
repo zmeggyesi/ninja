@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,10 +36,10 @@ import com.google.inject.Injector;
 public class NinjaTest {
 
     /** Backend of the test => Starts Ninja */
-	public NinjaTestServer ninjaTestServer;
+	private NinjaTestServer ninjaTestServer;
 	
 	/** A persistent HttpClient that stores cookies to make requests */
-	public NinjaTestBrowser ninjaTestBrowser;
+	protected NinjaTestBrowser ninjaTestBrowser;
 	
 	public NinjaTest() {
 	    //intentionally left emtpy.
@@ -47,16 +47,20 @@ public class NinjaTest {
     }
 
     @Before
-    public void startupServerAndBrowser() {
-        ninjaTestServer = new NinjaTestServer();
+    public final void startupServerAndBrowser() {
+        ninjaTestServer = NinjaTestServer.builder().build();
         ninjaTestBrowser = new NinjaTestBrowser();
     }
 
-    public Injector getInjector(){
+    protected Injector getInjector(){
         return ninjaTestServer.getInjector();
     }
+    
+    protected  <T> T getInstance(Class<T> type){
+        return ninjaTestServer.getInjector().getInstance(type);
+    }
 
-    public String to(String path) {
+    protected String to(String path) {
         if (path == null) {
             throw new IllegalArgumentException("Path was null");
         }
@@ -81,9 +85,12 @@ public class NinjaTest {
     }
 
     @After
-    public void shutdownServerAndBrowser() {
-        ninjaTestServer.shutdown();
-        ninjaTestBrowser.shutdown();
+    public final void shutdownServerAndBrowser() {
+        if (ninjaTestServer != null) {
+            ninjaTestServer.shutdown();
+        }
+        if (ninjaTestBrowser != null) {
+            ninjaTestBrowser.shutdown();
+        }
     }
-
 }

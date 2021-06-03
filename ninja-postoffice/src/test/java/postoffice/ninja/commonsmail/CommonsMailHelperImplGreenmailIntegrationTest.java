@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,12 +46,12 @@ import com.icegreen.greenmail.util.ServerSetup;
  */
 public class CommonsMailHelperImplGreenmailIntegrationTest {
 
-    GreenMail greenMail;
+    private GreenMail greenMail;
 
-    int SMTP_TEST_PORT;
+    private int SMTP_TEST_PORT;
 
     @Before
-    public void setUp() throws Exception {
+    public final void setUp() {
 
         SMTP_TEST_PORT = findAvailablePort(2000, 10000);
 
@@ -60,8 +60,10 @@ public class CommonsMailHelperImplGreenmailIntegrationTest {
     }
 
     @After
-    public void tearDown() throws Exception {
-        greenMail.stop();
+    public final void tearDown() {
+        if (greenMail != null) {
+            greenMail.stop();
+        }
     }
 
     @Test

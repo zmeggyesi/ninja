@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ public class CacheProviderTest {
 
     @Test
     public void defaultImplementation() {
-        NinjaPropertiesImpl ninjaProperties = new NinjaPropertiesImpl(NinjaMode.test);   
+        NinjaPropertiesImpl ninjaProperties = NinjaPropertiesImpl.builder().withMode(NinjaMode.test).build();
         
         ninjaProperties.setProperty(NinjaConstant.CACHE_IMPLEMENTATION, null);
         
@@ -54,7 +54,7 @@ public class CacheProviderTest {
     
     @Test
     public void configuredImplementation() {
-        NinjaPropertiesImpl ninjaProperties = new NinjaPropertiesImpl(NinjaMode.test);   
+        NinjaPropertiesImpl ninjaProperties = NinjaPropertiesImpl.builder().withMode(NinjaMode.test).build();  
         
         ninjaProperties.setProperty(NinjaConstant.CACHE_IMPLEMENTATION, CacheMemcachedImpl.class.getName());
         // just a dummy to test that loading works
@@ -69,7 +69,7 @@ public class CacheProviderTest {
     
     @Test
     public void missingImplementationThrowsExceptionOnUseNotCreate() {
-        NinjaPropertiesImpl ninjaProperties = new NinjaPropertiesImpl(NinjaMode.test);   
+        NinjaPropertiesImpl ninjaProperties = NinjaPropertiesImpl.builder().withMode(NinjaMode.test).build();   
         
         ninjaProperties.setProperty(NinjaConstant.CACHE_IMPLEMENTATION, "not_existing_implementation");
         
@@ -84,7 +84,7 @@ public class CacheProviderTest {
     
     @Test
     public void verifySingletonProviderAndInstance() {
-        NinjaPropertiesImpl ninjaProperties = new NinjaPropertiesImpl(NinjaMode.test);   
+        NinjaPropertiesImpl ninjaProperties = NinjaPropertiesImpl.builder().withMode(NinjaMode.test).build(); 
         
         ninjaProperties.setProperty(NinjaConstant.CACHE_IMPLEMENTATION, CacheMockImpl.class.getCanonicalName());
         

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,6 +86,6 @@ public class SetupDao {
             + "<li>... and much much more.</li>"
             + "</ul>" 
             + "<p>We are always happy to see you on our mailing list! "
-            + "Check out <a href=\"http://www.ninjaframework.org\">our website for more</a>.</p>";
+            + "Check out <a href=\"https://www.ninjaframework.org\">our website for more</a>.</p>";
 
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,8 +41,10 @@ import org.slf4j.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.util.LinkedHashMap;
 
 import models.FormObject;
+import models.PersonWithParameters;
 
 @Singleton
 public class ApplicationController {
@@ -186,6 +188,32 @@ public class ApplicationController {
         return Results.json().render(formObject);
     }
 
+    public Result postFormWithQueryParameters(
+            Context context,
+            @Param("a") Long valueA,
+            @Param("b") String valueB,
+            PersonWithParameters personWithParameters) {
+        
+        // use context to build a map of all request parameters
+        Map<String,String> parameters = new LinkedHashMap<>();
+        Map<String,String[]> allParams = context.getParameters();
+        if (allParams != null) {
+            allParams.forEach((k,vs) -> {
+                for (String v : vs) {
+                    parameters.put(k, v);       // last one will win
+                }
+            });
+        }
+        
+        if (personWithParameters != null) {
+            personWithParameters.setParameters(parameters);
+            personWithParameters.setA(valueA);
+            personWithParameters.setB(valueB);
+        }
+        
+        return Results.json().render(personWithParameters);
+    }
+    
     @Timed
     public Result directObjectTemplateRendering() {
         // Uses Results.html().render(Object) to directly 

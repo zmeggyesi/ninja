@@ -1,11 +1,11 @@
-/*
- * Copyright (C) 2012-2019 the original author or authors.
+/**
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package test;
 
-import test.utils.NinjaTestServer;
+package ninja;
+
+import ninja.utils.NinjaTestServer;
 import org.junit.After;
 import org.junit.Before;
 
@@ -44,13 +45,15 @@ public class FreshNinjaServerTester extends BaseNinjaServerTester {
     private NinjaTestServer ninjaTestServer;
     
     @Before
-    public void startNinjaServer() {
-        ninjaTestServer = new NinjaTestServer();
+    public final void startNinjaServer() {
+        ninjaTestServer = NinjaTestServer.builder().build();
     }
 
     @After
-    public void shutdownNinjaServer() {
-        ninjaTestServer.shutdown();
+    public final void shutdownNinjaServer() {
+        if (ninjaTestServer != null) {
+            ninjaTestServer.shutdown();
+        }
     }
 
     @Override

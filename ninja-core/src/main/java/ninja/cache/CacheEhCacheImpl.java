@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import com.google.inject.Singleton;
  * offload the database and simplify scalability. Ehcache is robust, proven and
  * full-featured and this has made it the most widely-used Java-based cache.</p>
  *
- * @see http://ehcache.org/
+ * See https://www.ehcache.org/
  *
  * expiration is specified in seconds
  * 

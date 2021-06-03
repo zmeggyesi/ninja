@@ -1,19 +1,49 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package ninja.template;
+
+import freemarker.template.Configuration;
+import ninja.Context;
+import ninja.Result;
+import ninja.Results;
+import ninja.Route;
+import ninja.exceptions.RenderingException;
+import ninja.i18n.Lang;
+import ninja.i18n.Messages;
+import ninja.session.FlashScope;
+import ninja.session.Session;
+import ninja.utils.NinjaProperties;
+import ninja.utils.ResponseStreams;
+import org.hamcrest.CoreMatchers;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
+
+import javax.inject.Singleton;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 import static ninja.template.TemplateEngineFreemarker.FREEMARKER_CONFIGURATION_FILE_SUFFIX;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -26,83 +56,51 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.inject.Singleton;
-
-import ninja.Context;
-import ninja.Result;
-import ninja.Results;
-import ninja.Route;
-import ninja.exceptions.RenderingException;
-import ninja.i18n.Lang;
-import ninja.i18n.Messages;
-import ninja.session.FlashScope;
-import ninja.session.Session;
-import ninja.utils.NinjaProperties;
-import ninja.utils.ResponseStreams;
-
-import org.hamcrest.CoreMatchers;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.slf4j.Logger;
-
-import freemarker.template.Configuration;
-
 @RunWith(MockitoJUnitRunner.class)
 public class TemplateEngineFreemarkerTest {
 
     @Mock
-    Lang lang;
+    private Lang lang;
 
     @Mock
-    Logger logger;
+    private Logger logger;
 
     @Mock
-    TemplateEngineHelper templateEngineHelper;
+    private TemplateEngineHelper templateEngineHelper;
 
     @Mock
-    TemplateEngineManager templateEngineManager;
+    private TemplateEngineManager templateEngineManager;
 
     @Mock
-    TemplateEngineFreemarkerReverseRouteMethod templateEngineFreemarkerReverseRouteMethod;
+    private TemplateEngineFreemarkerReverseRouteMethod templateEngineFreemarkerReverseRouteMethod;
 
     @Mock
-    TemplateEngineFreemarkerAssetsAtMethod templateEngineFreemarkerAssetsAtMethod;
+    private TemplateEngineFreemarkerAssetsAtMethod templateEngineFreemarkerAssetsAtMethod;
 
     @Mock
-    TemplateEngineFreemarkerWebJarsAtMethod templateEngineFreemarkerWebJarsAtMethod;
+    private TemplateEngineFreemarkerWebJarsAtMethod templateEngineFreemarkerWebJarsAtMethod;
 
     @Mock
-    NinjaProperties ninjaProperties;
+    private NinjaProperties ninjaProperties;
 
     @Mock
-    Messages messages;
+    private Messages messages;
 
     @Mock
-    Context context;
+    private Context context;
 
     @Mock
-    Result result;
+    private Result result;
     
     @Mock
-    Route route;
+    private Route route;
 
-    TemplateEngineFreemarker templateEngineFreemarker;
+    private TemplateEngineFreemarker templateEngineFreemarker;
 
-    Writer writer;
+    private Writer writer;
 
     @Before
-    public void before() throws Exception {
+    public final void before() throws Exception {
         //Setup that allows to to execute invoke(...) in a very minimal version.
         when(ninjaProperties.getWithDefault(FREEMARKER_CONFIGURATION_FILE_SUFFIX, ".ftl.html")).thenReturn(".ftl.html");
        
@@ -149,7 +147,7 @@ public class TemplateEngineFreemarkerTest {
     }
 
     @Test
-    public void testBasicInvocation() throws Exception {
+    public void testBasicInvocation() {
         templateEngineFreemarker.invoke(context, Results.ok());
         verify(ninjaProperties).getWithDefault(TemplateEngineFreemarker.FREEMARKER_CONFIGURATION_FILE_SUFFIX, ".ftl.html");
         assertThat(templateEngineFreemarker.getSuffixOfTemplatingEngine(), equalTo(".ftl.html"));
@@ -158,7 +156,7 @@ public class TemplateEngineFreemarkerTest {
     }
     
     @Test
-    public void testThatConfigurationCanBeRetrieved() throws Exception {
+    public void testThatConfigurationCanBeRetrieved() {
         templateEngineFreemarker.invoke(context, Results.ok());
         assertThat(templateEngineFreemarker.getConfiguration(), CoreMatchers.notNullValue(Configuration.class));
     }

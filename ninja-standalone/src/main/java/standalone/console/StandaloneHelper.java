@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package standalone.console;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.URI;
 import java.net.URL;
@@ -116,8 +117,8 @@ public class StandaloneHelper {
     
     static public Standalone create(Class<? extends Standalone> standaloneClass) {
         try {
-            return standaloneClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            return standaloneClass.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException("Unable to create " + standaloneClass.getCanonicalName() + " (either not on classpath or invalid class name)");
         }
     }

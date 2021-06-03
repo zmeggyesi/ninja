@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,19 +42,21 @@ import com.devbliss.doctest.DocTest;
  */
 @Deprecated
 public abstract class NinjaApiDocTest extends DocTest {
-    private static NinjaTestServer ninjaTestServer;
+    private NinjaTestServer ninjaTestServer;
 
     public NinjaApiDocTest() {
     }
 
     @Before
-    public void startServerInTestMode() {
-        ninjaTestServer = new NinjaTestServer();
+    public final void startServerInTestMode() {
+        ninjaTestServer = NinjaTestServer.builder().build();
     }
 
     @After
-    public void shutdownServer() {
-        ninjaTestServer.shutdown();
+    public final void shutdownServer() {
+        if (ninjaTestServer != null) {
+            ninjaTestServer.shutdown();
+        }
     }
 
     public URI buildUri(String relativePath, Map<String, String> parameters) throws URISyntaxException {

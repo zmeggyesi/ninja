@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class FlashScopeTest {
     private NinjaProperties ninjaProperties;
 
     @Before
-    public void setUp() {
+    public final void setUp() {
         when(ninjaProperties.getOrDie(NinjaConstant.applicationCookiePrefix))
                 .thenReturn("NINJA");
     }

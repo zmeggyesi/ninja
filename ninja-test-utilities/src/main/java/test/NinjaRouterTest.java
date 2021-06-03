@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,25 +41,26 @@ import org.junit.After;
 public class NinjaRouterTest {
 
     /** The router - initiated from a real server. Routes are verified with this router */
-    public Router router;
+    private Router router;
     
-    Bootstrap ninjaBootup;
+    private Bootstrap ninjaBootup;
     
     /**
      * Start the server and load the routes.
      */
-    public void startServer(NinjaMode ninjaMode) {
+    public final void startServer(NinjaMode ninjaMode) {
         
         if (ninjaMode == null) {
-            
-            NinjaPropertiesImpl ninjaProperties = new NinjaPropertiesImpl(
-                    NinjaModeHelper.determineModeFromSystemPropertiesOrProdIfNotSet());
+
+            NinjaPropertiesImpl ninjaProperties = NinjaPropertiesImpl.builder()
+                    .withMode(NinjaModeHelper.determineModeFromSystemPropertiesOrProdIfNotSet())
+                    .build();
             
             ninjaBootup = new Bootstrap(
                     ninjaProperties);
         } else {
             // in this case servletContext can be null
-            NinjaPropertiesImpl ninjaProperties = new NinjaPropertiesImpl(ninjaMode);
+            NinjaPropertiesImpl ninjaProperties = NinjaPropertiesImpl.builder().withMode(ninjaMode).build();
             
             ninjaBootup = new Bootstrap(ninjaProperties);
         }
@@ -71,7 +72,7 @@ public class NinjaRouterTest {
     }
     
     @After
-    public void stopServer() {
+    public final void stopServer() {
         
         if (ninjaBootup != null) {
             ninjaBootup.shutdown();
@@ -85,7 +86,7 @@ public class NinjaRouterTest {
      * 
      * No special mode is set. By default the mode "dev" is then used by the server.
      */
-    public void startServer() {
+    public final void startServer() {
         startServer(null);
     }
 

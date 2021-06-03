@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012-2019 the original author or authors.
+ * Copyright (C) the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,6 @@
 package ninja.utils;
 
 import com.google.common.collect.Maps;
-
-import java.util.HashSet;
-import java.util.Map;
 import ninja.ContentTypes;
 import ninja.Context;
 import ninja.Cookie;
@@ -28,27 +25,34 @@ import ninja.Results;
 import ninja.Route;
 import ninja.bodyparser.BodyParserEngine;
 import ninja.bodyparser.BodyParserEngineManager;
-import ninja.params.ParamParser;
 import ninja.params.ParamParsers;
 import ninja.session.FlashScope;
 import ninja.session.Session;
 import ninja.validation.Validation;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.HashSet;
+import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractContextTest {
@@ -77,7 +81,7 @@ public class AbstractContextTest {
     private AbstractContextImpl abstractContext;
 
     @Before
-    public void setUp() {
+    public final void setUp() {
         abstractContext = new AbstractContextImpl(
                 bodyParserEngineManager, 
                 flashCookie, 
@@ -85,7 +89,7 @@ public class AbstractContextTest {
                 sessionCookie,
                 validation,
                 null,
-                new ParamParsers(new HashSet<ParamParser>()));
+                new ParamParsers(new HashSet<>()));
         
         abstractContext.init("", "/");
     }
@@ -297,9 +301,15 @@ public class AbstractContextTest {
     }
 
     @Test
-    public void getAcceptContentType() {
+    public void getAcceptContentTypeLegacy() {
         AbstractContextImpl context = spy(abstractContext);
-        
+
+        doReturn("application/protobuf;q=1, application/json;q=0.7").when(context).getHeader("accept");
+        assertEquals("application/protobuf", context.getAcceptContentType());
+
+        doReturn("text/*;q=0.3, text/html;q=0.7, text/html;level=1, text/html;level=2;q=0.4, */*;q=0.5").when(context).getHeader("accept");
+        assertEquals("text/html", context.getAcceptContentType());
+
         doReturn(null).when(context).getHeader("accept");
         assertEquals(Result.TEXT_HTML, context.getAcceptContentType());
 
@@ -307,7 +317,10 @@ public class AbstractContextTest {
         assertEquals(Result.TEXT_HTML, context.getAcceptContentType());
 
         doReturn("totally_unknown").when(context).getHeader("accept");
-        assertEquals(Result.TEXT_HTML, context.getAcceptContentType());
+        assertEquals("totally_unknown", context.getAcceptContentType());
+
+        doReturn("application/protobuf").when(context).getHeader("accept");
+        assertEquals("application/protobuf", context.getAcceptContentType());
 
         doReturn("application/json").when(context).getHeader("accept");
         assertEquals(Result.APPLICATION_JSON, context.getAcceptContentType());
@@ -321,8 +334,53 @@ public class AbstractContextTest {
         doReturn("text/plain").when(context).getHeader("accept");
         assertEquals(Result.TEXT_PLAIN, context.getAcceptContentType());
 
-        doReturn("text/plain, application/json").when(context).getHeader("accept");
+        doReturn("application/json, text/plain").when(context).getHeader("accept");
         assertEquals(Result.APPLICATION_JSON, context.getAcceptContentType());
+    }
+
+    @Test
+    public void getAcceptContentType() {
+        AbstractContextImpl context = spy(abstractContext);
+
+        doReturn("application/protobuf;q=1, application/json;q=0.7").when(context).getHeader("accept");
+        assertEquals("application/protobuf", context.getAcceptContentType());
+
+        doReturn("application/protobuf;q=0, application/json;q=0.7").when(context).getHeader("accept");
+        assertNotEquals("application/protobuf", context.getAcceptContentType());
+
+        doReturn("text/*;q=0.3, text/html;q=0.7, text/html;level=1, text/html;level=2;q=0.4, */*;q=0.5").when(context).getHeader("accept");
+        assertEquals("text/html", context.getAcceptContentType());
+
+        doReturn(null).when(context).getHeader("accept");
+        assertEquals(Result.TEXT_HTML, context.getAcceptContentType());
+
+        doReturn("").when(context).getHeader("accept");
+        assertEquals(Result.TEXT_HTML, context.getAcceptContentType());
+
+        doReturn("totally_unknown").when(context).getHeader("accept");
+        assertEquals("totally_unknown", context.getAcceptContentType());
+
+        doReturn("application/protobuf").when(context).getHeader("accept");
+        assertEquals("application/protobuf", context.getAcceptContentType());
+
+        doReturn("application/json").when(context).getHeader("accept");
+        assertEquals(Result.APPLICATION_JSON, context.getAcceptContentType());
+
+        doReturn("text/html;q=1, application/json;q=0.9").when(context).getHeader("accept");
+        assertEquals(Result.TEXT_HTML, context.getAcceptContentType());
+
+        doReturn("application/xhtml;q=1, application/json;q=0.9").when(context).getHeader("accept");
+        assertEquals(Result.TEXT_HTML, context.getAcceptContentType());
+
+        doReturn("text/plain").when(context).getHeader("accept");
+        assertEquals(Result.TEXT_PLAIN, context.getAcceptContentType());
+
+        doReturn("text/plain;q=0.5, application/json;q=0.9").when(context).getHeader("accept");
+        assertEquals(Result.APPLICATION_JSON, context.getAcceptContentType());
+
+        // 2021 versions of chrome, samsung, and a few others
+        doReturn("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9").when(context).getHeader("accept");
+        assertEquals(Result.TEXT_HTML, context.getAcceptContentType());
     }
 
     @Test
